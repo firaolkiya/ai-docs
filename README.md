@@ -10,44 +10,6 @@ A React application that allows users to upload documents and chat with an AI ba
 - 💾 **API key storage: Automatically saves OpenAI API key in localStorage**
 - 📱 **Responsive: User-friendly interface on all devices**
 
-## 🚀 Getting Started
-
-### 1. Install and Run the Project
-
-```bash
-# Clone the project
-
-cd Document-Chat-AI-main
-
-
-# Install dependencies
-
-npm install
-
-
-# Run the development server
-
-npm run dev
-
-```
-
-## 2. Configure API Key
-
-- Open the application at http://localhost:5173/Document-Chat-AI/
-- Enter your OpenAI API key when prompted
-- The API key will be saved in localStorage
-
-## 3. Upload Documents
-
-- Click the "Choose file to upload" button or drag and drop files into the upload area
-- Supported formats: PDF, DOCX, TXT
-- Maximum file size: 10MB
-
-## 4. Chat with Documents
-
-- After successfully uploading a document, ask questions about its content
-- The AI will respond based on the uploaded document's content
-- The AI will cite and reference relevant sections of the document
 
 ## 🛠 Technologies Used
 
@@ -93,18 +55,8 @@ Quick setup — Docker (recommended)
 - Docker Desktop for Windows: https://docs.docker.com/desktop/windows/install/
 - Linux / macOS: follow the platform docs at https://docs.docker.com/get-started/
 
-2. From the project root run:
-
-```bash
-docker compose up --build
-```
-
-This will build and start the backend on http://localhost:8000 and the frontend dev server on http://localhost:5173.
-
-Important: .env keys must be set
-
+2. Setup enviromental variables
 The backend expects several environment variables. At minimum set `MONGO_URI` and `OPENAI_API_KEY` (and others if you use Pinecone / HuggingFace features). Create a `backend/ai-docs-chat/.env` (or set environment entries in your compose file) with values like:
-
 ```
 MONGO_URI=mongodb://mongo:27017
 OPENAI_API_KEY=sk-...           # OpenAI API key (if using OpenAI)
@@ -117,7 +69,20 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=43200
 ```
 
+
+3. From the project root run:
+
+```bash
+docker compose up --build
+```
+
+This will build and start the backend on http://localhost:8000 and the frontend dev server on http://localhost:5173.
+
+Important: .env keys must be set
+
+
 If you run MongoDB as a service in the same compose stack, point `MONGO_URI` to that service (e.g. `mongodb://mongo:27017`).
+
 
 Local (without Docker)
 
