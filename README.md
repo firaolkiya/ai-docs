@@ -78,9 +78,21 @@ Repository layout (important files)
 └─ README.md
 ```
 
+Clone the repository
+
+```bash
+# clone (use the repo URL for this project)
+git clone https://github.com/firaolkiya/ai-docs.git
+cd ai-docs
+```
+
 Quick setup — Docker (recommended)
 
 1. Install Docker and Docker Compose.
+
+- Docker Desktop for Windows: https://docs.docker.com/desktop/windows/install/
+- Linux / macOS: follow the platform docs at https://docs.docker.com/get-started/
+
 2. From the project root run:
 
 ```bash
@@ -89,7 +101,23 @@ docker compose up --build
 
 This will build and start the backend on http://localhost:8000 and the frontend dev server on http://localhost:5173.
 
-If the frontend isn't reachable, ensure Vite is exposed by host (compose should pass `--host 0.0.0.0`).
+Important: .env keys must be set
+
+The backend expects several environment variables. At minimum set `MONGO_URI` and `OPENAI_API_KEY` (and others if you use Pinecone / HuggingFace features). Create a `backend/ai-docs-chat/.env` (or set environment entries in your compose file) with values like:
+
+```
+MONGO_URI=mongodb://mongo:27017
+OPENAI_API_KEY=sk-...           # OpenAI API key (if using OpenAI)
+GROK_API_KEY=...                # optional, used in some services
+PINECONE_API_KEY=...            # optional, if using Pinecone
+HUGGINGFACE_API_KEY=...         # optional, if using HuggingFace
+PINECONE_INDEX_NAME=document-chat
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=43200
+```
+
+If you run MongoDB as a service in the same compose stack, point `MONGO_URI` to that service (e.g. `mongodb://mongo:27017`).
 
 Local (without Docker)
 
