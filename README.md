@@ -51,104 +51,74 @@ npm run dev
 
 ## 🛠 Technologies Used
 
-- **Frontend: React 18 + Vite**
-- **Styling: TailwindCSS**
-- **AI: OpenAI GPT-3.5-turbo**
-- **File Processing:**
-- **PDF: pdfjs-dist**
-- **DOCX: mammoth**
-- **TXT: native browser API**
+# ai-docs-chat — Document Chat AI (short)
 
-## 📁 Project Structure
+A small web app to upload documents and chat with an AI that uses the uploaded documents as its knowledge source.
+
+Quick overview
+- Frontend: React + Vite (development server)
+- Backend: FastAPI (uvicorn) + MongoDB (Motor)
+- Dev recommended: Docker Compose for local development
+
+Repository layout (important files)
 
 ```
-src/
-├── components/     # React components
-│ ├── ChatWindow.jsx    # Chat interface
-│ ├── DocumentView.jsx  # Document display
-│ ├── FileUpload.jsx    # File upload component
-│ ├── Sidebar.jsx   # Sidebar component
-│ └── ApiKeyModal.jsx   # API key input modal
-├── context/    # React Context
-│ ├── ChatProvider.jsx  # Main provider
-│ └── CreateChatContext.jsx     # Context definition
-├── services/   # Services
-│ ├── openaiService.js  # OpenAI API service
-│ └── fileProcessorService.js   # File processing service
-├── pages/  # Pages
-│ └── ChatPage.jsx  # Main page
-└── layouts/    # Layouts
-└── MainLayout.jsx  # Main layout
+./
+├─ backend/ai-docs-chat/     # FastAPI backend (Dockerfile, requirements.txt, src/)
+│  └─ src/                   # backend source (main.py, routes, services, models)
+├─ public/                   # static assets
+├─ src/                      # frontend source (React + Vite)
+│  ├─ components/
+│  ├─ context/
+│  ├─ services/
+│  └─ pages/
+├─ Dockerfile                 # frontend image (dev) in this repo
+├─ docker-compose.yml         # recommended local orchestration (frontend + backend)
+├─ package.json               # frontend npm scripts and deps
+└─ README.md
 ```
 
-## 🔧 Configuration
+Quick setup — Docker (recommended)
 
-### Environment Variables
+1. Install Docker and Docker Compose.
+2. From the project root run:
 
-- No .env file is required. The API key is entered directly in the application.
+```bash
+docker compose up --build
+```
 
-### Node.js Version
+This will build and start the backend on http://localhost:8000 and the frontend dev server on http://localhost:5173.
 
-- Required: Node.js v18.15.0+
-- Recommended: Node.js v20+ for the latest dependencies
+If the frontend isn't reachable, ensure Vite is exposed by host (compose should pass `--host 0.0.0.0`).
 
-## 🎯 Usage Guide
+Local (without Docker)
 
-### Asking Effective Questions
+Frontend:
+```bash
+cd ./
+npm install
+npm run dev
+# open http://localhost:5173/
+```
 
-1. **Specific questions: "What does the document say about topic X?"**
-2. **Search for information: "Is there any information about Y in the document?"**
-3. **Summarization: "Summarize the main content of the document"**
-4. **Citations: "Quote the section discussing Z"**
+Backend:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r backend/ai-docs-chat/requirements.txt
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-### AI Response Rules
+Notes
+- The backend reads `MONGO_URI` from the environment (or a .env). If using Compose, add an env_file or environment entry pointing to your MongoDB. For example: `mongodb://mongo:27017` when running a Mongo container.
+- Dev convenience: the frontend Docker setup may mount the project into the container — ensure `node_modules` are available (use a named volume for `/app/node_modules` if needed).
+- For production, build a static frontend and serve with a static server (or behind a reverse proxy).
 
-- ✅ Uses only information from the uploaded document
-- ✅ Cites sources and locations within the document
-- ✅ Responds with "This information is not available in the document" if no relevant content is found
-- ✅ Provides concise, accurate, and clear answers
+Troubleshooting
+- If Vite reports `Local: http://localhost:5173` but the browser cannot connect, make sure Vite is started with `--host 0.0.0.0` so Docker can expose the port.
 
-## 🔒 Security
+License
+- MIT
 
-- API key is stored locally in the browser
-- No API key is sent to external servers
-- Documents are processed entirely in the browser
-- No document storage on servers
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **"Invalid API key"**
-
+If you want, I can expand this README with more details (environment variables, running tests, or a sample `.env`).
    - Verify your OpenAI API key
-   - Ensure the API key has access to GPT-3.5-turbo
-
-2. **"File too large"**
-
-   - Reduce file size to under 10MB
-   - Use a PDF compression tool if necessary
-
-3. **"Unsupported file type"**
-
-   - Only PDF, DOCX, and TXT are supported
-   - Convert files to a supported format
-
-4. **Node.js version errors**
-   - Update Node.js to version 18.15.0+
-   - Use NVM to manage multiple Node versions
-
-## 📄 License
-
-- MIT License - see the LICENSE file for details.
-
-## 🤝 Contributing
-
-- Contributions are welcome! Please create an issue or pull request.
-
----
-
-- **Developed by**: Lehai
-- **Version**: 1.0.0
-- **Updated**: September 2025
-# ai-docs
